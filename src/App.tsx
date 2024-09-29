@@ -1,54 +1,8 @@
 import "./App.css";
 import { useForm } from "@tanstack/react-form";
-
-const calculateMonthlySalaryWithTax = (yearlySalary: number): number => {
-  if (yearlySalary < 0) {
-    throw new Error("Yearly salary must be a non-negative value.");
-  }
-
-  // Tax brackets and rates for Australia (2023-2024)
-  const taxBrackets: { threshold: number; rate: number }[] = [
-    { threshold: 18200, rate: 0 }, // Tax-free threshold
-    { threshold: 45000, rate: 0.19 }, // 19% for income over $18,200
-    { threshold: 120000, rate: 0.325 }, // 32.5% for income over $45,000
-    { threshold: 180000, rate: 0.37 }, // 37% for income over $120,000
-    { threshold: Infinity, rate: 0.45 }, // 45% for income over $180,000
-  ];
-
-  let tax = 0;
-  let previousThreshold = 0;
-
-  for (const bracket of taxBrackets) {
-    if (yearlySalary > bracket.threshold) {
-      tax += (bracket.threshold - previousThreshold) * bracket.rate;
-      previousThreshold = bracket.threshold;
-    } else {
-      tax += (yearlySalary - previousThreshold) * bracket.rate;
-      break;
-    }
-  }
-
-  const afterTaxSalary = yearlySalary - tax;
-  const monthlySalary = afterTaxSalary / 12;
-
-  return parseFloat(monthlySalary.toFixed(2));
-};
-
-const calculateMonthlyRentalIncome = (weeklyRental: number): number => {
-  const calc = (weeklyRental * 52) / 12;
-  return parseFloat(calc.toFixed(2));
-};
-
-const formatCurrency = (
-  amount: number,
-  locale: string = "en-AU",
-  currency: string = "AUD"
-): string => {
-  return new Intl.NumberFormat(locale, {
-    style: "currency",
-    currency: currency,
-  }).format(amount);
-};
+import { calculateMonthlySalaryWithTax } from "./utils/calculateMonthlySalaryWithTax";
+import { calculateMonthlyRentalIncome } from "./utils/calculateMonthlyRentalIncome";
+import { formatCurrency } from "./utils/formatCurrency";
 
 type Frequency =
   | "daily"
@@ -186,29 +140,6 @@ const App = () => {
         </section>
 
         <section>
-          <h2>Savings target precentage</h2>
-          <p>How much of your monthly income are you targetting to save?</p>
-          <form.Field
-            name="savingsTarget"
-            children={(field) => {
-              return (
-                <label>
-                  Enter percentage
-                  <input
-                    type="number"
-                    id={field.name}
-                    name={field.name}
-                    value={field.state.value}
-                    onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                  />
-                </label>
-              );
-            }}
-          />
-        </section>
-
-        <section>
           <h2>Expenses</h2>
           <form.Field name="expenses" mode="array">
             {(field) => (
@@ -322,15 +253,14 @@ const App = () => {
       </form>
 
       <section>
-        <h2>Calculations</h2>
-        <h3>Savings</h3>
-        <p>{formatCurrency(localStorageValues.targetMonthlySavings)}</p>
-
-        <h3>Monthly spend available</h3>
+        <h2>Total monthly income</h2>
+        <p>{formatCurrency(localStorageValues.totalMonthlyIncome)}</p>
+        <h2>Total monthly expenses</h2>
+        <p>{formatCurrency(localStorageValues.totalMonthlyExpenses)}</p>
+        <h2>Total monthly savings</h2>
         <p>
           {formatCurrency(
             localStorageValues.totalMonthlyIncome -
-              localStorageValues.targetMonthlySavings -
               localStorageValues.totalMonthlyExpenses
           )}
         </p>
