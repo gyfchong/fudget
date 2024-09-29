@@ -220,6 +220,13 @@ const App = () => {
                           }}
                         </form.Field>
                       </li>
+                      <button
+                        onClick={() => {
+                          field.state.value.splice(i, 1);
+                        }}
+                      >
+                        delete
+                      </button>
                     </ul>
                   );
                 })}
@@ -246,7 +253,7 @@ const App = () => {
           selector={(state) => [state.canSubmit, state.isSubmitting]}
           children={([canSubmit, isSubmitting]) => (
             <button type="submit" disabled={!canSubmit}>
-              {isSubmitting ? "..." : "Submit"}
+              {isSubmitting ? "..." : "Calculate"}
             </button>
           )}
         />
