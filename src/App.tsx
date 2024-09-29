@@ -257,6 +257,13 @@ const App = () => {
             </button>
           )}
         />
+        <button
+          onClick={() => {
+            localStorage.setItem("fudget", "{}");
+          }}
+        >
+          Clear all
+        </button>
       </form>
 
       <section>
