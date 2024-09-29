@@ -220,13 +220,15 @@ const App = () => {
                           }}
                         </form.Field>
                       </li>
-                      <button
-                        onClick={() => {
-                          field.state.value.splice(i, 1);
-                        }}
-                      >
-                        delete
-                      </button>
+                      <li>
+                        <button
+                          onClick={() => {
+                            field.state.value.splice(i, 1);
+                          }}
+                        >
+                          delete
+                        </button>
+                      </li>
                     </ul>
                   );
                 })}
