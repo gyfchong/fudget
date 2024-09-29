@@ -38,7 +38,6 @@ const App = () => {
     defaultValues: {
       yearlySalary: (localStorageValues?.yearlySalary as string) || "0",
       weeklyRental: (localStorageValues?.weeklyRental as string) || "0",
-      savingsTarget: (localStorageValues?.savingsTarget as string) || "0",
       expenses:
         (localStorageValues?.expenses as {
           name: string;
@@ -57,9 +56,6 @@ const App = () => {
 
       const totalMonthlyIncome = monthlySalaryIncome + monthlyRentalIncome;
 
-      const targetMonthlySavings =
-        totalMonthlyIncome * (parseFloat(value.savingsTarget) / 100);
-
       const totalMonthlyExpenses = value.expenses.reduce(
         (total, expense) =>
           total +
@@ -74,7 +70,6 @@ const App = () => {
           monthlySalaryIncome,
           monthlyRentalIncome,
           totalMonthlyIncome,
-          targetMonthlySavings,
           totalMonthlyExpenses,
         })
       );
