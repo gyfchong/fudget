@@ -230,7 +230,6 @@ const App = () => {
                     </ul>
                   );
                 })}
-
                 <button
                   key="add-expense"
                   onClick={() =>
@@ -248,6 +247,8 @@ const App = () => {
             )}
           </form.Field>
         </section>
+
+        <hr />
 
         <form.Subscribe
           selector={(state) => [state.canSubmit, state.isSubmitting]}
